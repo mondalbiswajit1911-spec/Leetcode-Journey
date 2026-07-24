@@ -1,44 +1,31 @@
 class MyCalendarTwo {
-    List<int[]> bookings;
-    List<int[]> overLappings;
+    Map<Integer, Integer> counts;
     public MyCalendarTwo() {
-        bookings = new ArrayList<int[]>();
-        overLappings = new ArrayList<int[]>();
+        counts = new TreeMap<Integer, Integer>();
     }
+    
+    public boolean book(int startTime, int endTime) {
+        int cnt = 0;
+        counts.put(startTime, counts.getOrDefault(startTime, 0) +1);
+        counts.put(endTime, counts.getOrDefault(endTime, 0) -1);
 
-    public boolean overlap(int[] i1, int s2, int e2){
-        int s1 =i1[0];
-        int e1 = i1[1];
-
-        return e1 >= s2 && e2 >= s1;
-    }
-    public boolean book(int startTime, int endTime){
-        if(bookings.size()==0){
-            bookings.add(new int[]{
-                startTime,
-                endTime -1
-            });
-            return true;
-        }
-
-        for(int i =0; i < overLappings.size(); i++){
-            if(overlap(overLappings.get(i), startTime, endTime -1)){
+        for(Map.Entry<Integer, Integer> entry : counts.entrySet()){
+            cnt = cnt + entry.getValue();
+            if(cnt > 2){
+                counts.put(startTime, counts.getOrDefault(startTime, 0) -1);
+                counts.put(endTime, counts.getOrDefault(endTime, 0) +1);
+                if(counts.get(startTime)==0){
+                    counts.remove(startTime);
+                }
+                  if(counts.get(endTime)==0){
+                    counts.remove(endTime);
+                }
                 return false;
             }
         }
-        for(int i=0; i< bookings.size(); i++){
-        if(overlap(bookings.get(i), startTime, endTime -1)){
-            overLappings.add(new int[]{
-                Math.max(bookings.get(i)[0], startTime),
-                Math.min(bookings.get(i)[1], endTime-1)
-            });
-          }
-        }
-        bookings.add(new int[]{
-            startTime,
-            endTime -1
-        });
         return true;
+        
+
     }
 }
 
