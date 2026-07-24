@@ -3,24 +3,20 @@ class MyCalendarTwo {
     public MyCalendarTwo() {
         counts = new TreeMap<Integer, Integer>();
     }
-    
+   
     public boolean book(int startTime, int endTime) {
-        int cnt = 0;
         counts.put(startTime, counts.getOrDefault(startTime, 0) +1);
         counts.put(endTime, counts.getOrDefault(endTime, 0) -1);
+        int bookings =0;
 
         for(Map.Entry<Integer, Integer> entry : counts.entrySet()){
-            cnt = cnt + entry.getValue();
-            if(cnt > 2){
-                counts.put(startTime, counts.getOrDefault(startTime, 0) -1);
-                counts.put(endTime, counts.getOrDefault(endTime, 0) +1);
-                if(counts.get(startTime)==0){
-                    counts.remove(startTime);
-                }
-                  if(counts.get(endTime)==0){
-                    counts.remove(endTime);
-                }
-                return false;
+            bookings = bookings + entry.getValue();
+
+            if(bookings > 2){
+             counts.put(startTime, counts.getOrDefault(startTime, 0) -1);
+             counts.put(endTime, counts.getOrDefault(endTime, 0) +1);
+
+             return false;
             }
         }
         return true;
