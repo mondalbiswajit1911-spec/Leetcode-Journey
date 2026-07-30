@@ -30,7 +30,7 @@ class Solution {
         count = 0;
         int jumps2 = len -k;
         ListNode n2 = head;
-        while(count < len-k){
+        while(count < jumps2){
             count++;
             n2 = n2.next;
         }
