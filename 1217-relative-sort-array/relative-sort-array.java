@@ -1,42 +1,30 @@
-import java.util.*;
-
 class Solution {
     public int[] relativeSortArray(int[] arr1, int[] arr2) {
 
-        Map<Integer, Integer> map = new HashMap<>();
+        int[] freq = new int[1001];
 
-        // Count frequency
         for (int num : arr1) {
-            map.put(num, map.getOrDefault(num, 0) + 1);
+            freq[num]++;
         }
 
-        int[] ans = new int[arr1.length];
         int index = 0;
 
-        // Add elements in arr2 order
+        // Place elements according to arr2
         for (int num : arr2) {
-            while (map.getOrDefault(num, 0) > 0) {
-                ans[index++] = num;
-                map.put(num, map.get(num) - 1);
+            while (freq[num] > 0) {
+                arr1[index++] = num;
+                freq[num]--;
             }
         }
 
-        // Store remaining elements
-        List<Integer> remaining = new ArrayList<>();
-
-        for (int key : map.keySet()) {
-            while (map.get(key) > 0) {
-                remaining.add(key);
-                map.put(key, map.get(key) - 1);
+        // Place remaining elements in ascending order
+        for (int i = 0; i < freq.length; i++) {
+            while (freq[i] > 0) {
+                arr1[index++] = i;
+                freq[i]--;
             }
         }
 
-        Collections.sort(remaining);
-
-        for (int num : remaining) {
-            ans[index++] = num;
-        }
-
-        return ans;
+        return arr1;
     }
 }
