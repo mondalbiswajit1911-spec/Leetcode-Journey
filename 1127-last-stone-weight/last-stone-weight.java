@@ -1,26 +1,28 @@
 class Solution {
     public int lastStoneWeight(int[] stones) {
 
-        List<Integer> list = new ArrayList<>();
+       PriorityQueue<Integer> max_heap =
+            new PriorityQueue<>(Collections.reverseOrder());
 
-        for (int num : stones) {
-          list.add(num);
+        // Put all stones into max heap
+        for (int stone : stones) {
+            max_heap.add(stone);
         }
 
-        while(list.size()> 1){
+        while(max_heap.size()> 1){
             //list.sort();
-            Collections.sort(list);
-            int last = list.remove(list.size()-1);
-            int second_last = list.remove(list.size()-1);
+            //Collections.sort(list);
+            int last = max_heap.remove();
+            int second_last = max_heap.remove();
 
             if(last > second_last){
-                list.add(last - second_last);
+                max_heap.add(last - second_last);
             }
 
-            // if(list.size()==1){
-            //     return list.get(0);
+            // if(max_heap.size()==1){
+            //     return max_heap.peek();
             // }
         }
-        return list.isEmpty() ? 0 : list.get(0);
+         return max_heap.isEmpty() ? 0 : max_heap.peek();
     }
 }
