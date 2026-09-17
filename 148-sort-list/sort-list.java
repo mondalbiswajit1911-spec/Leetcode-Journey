@@ -10,23 +10,58 @@
  */
 class Solution {
     public ListNode sortList(ListNode head) {
-        List<Integer> list = new ArrayList<>();
-        ListNode curr = head;
 
-        while(curr != null){
-            list.add(curr.val);
+        // Empty list or one node is already sorted
+        if (head == null || head.next == null) {
+            return head;
+        }
+
+        // Find middle
+        ListNode slow = head;
+        ListNode fast = head;
+
+        while (fast.next != null && fast.next.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+
+        // Split into two lists
+        ListNode second = slow.next;
+        slow.next = null;
+
+        // Sort both halves
+        ListNode left = sortList(head);
+        ListNode right = sortList(second);
+
+        // Merge sorted halves
+        return merge(left, right);
+    }
+
+    private ListNode merge(ListNode left, ListNode right) {
+
+        ListNode dummy = new ListNode(0);
+        ListNode curr = dummy;
+
+        while (left != null && right != null) {
+
+            if (left.val <= right.val) {
+                curr.next = left;
+                left = left.next;
+            } else {
+                curr.next = right;
+                right = right.next;
+            }
+
             curr = curr.next;
         }
-        Collections.sort(list);
 
-        curr = head;
-        int i = 0;
-        while(curr != null){
-            curr.val = list.get(i);
-            i++;
-            curr = curr.next;
+        // Add remaining nodes
+        if (left != null) {
+            curr.next = left;
+        } else {
+            curr.next = right;
         }
-        return head;
-        
+
+        return dummy.next;
     }
 }
