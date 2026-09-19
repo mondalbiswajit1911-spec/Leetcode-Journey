@@ -1,23 +1,38 @@
 class KthLargest {
-    List<Integer> list;
+    PriorityQueue<Integer> minheap;
     int kth;
 
     public KthLargest(int k, int[] nums) {
-        list  =new ArrayList<Integer>();
         kth = k;
+        minheap = new PriorityQueue<Integer>();
 
-        for(int num : nums){
-            list.add(num);
+        for(int i = 0; i<Math.min(nums.length, k);i++){
+            minheap.add(nums[i]);
+        }
+        for(int i=k;i<nums.length;i++){
+            if(nums[i] > minheap.peek()){
+                minheap.remove();
+                minheap.add(nums[i]);
+            }
         }
         
     }
     
     public int add(int val) {
+        if(minheap.isEmpty()){
+            minheap.add(val);
+            return minheap.peek();
+        }
+        if(minheap.size() < kth){
+            minheap.add(val);
+            return minheap.peek();
+        }
+        if(val > minheap.peek()){
+            minheap.remove();
+            minheap.add(val);
+        }
 
-        list.add(val);
-        Collections.sort(list);
-        
-        return list.get(list.size()-kth);
+        return minheap.peek();
         
     }
 }
