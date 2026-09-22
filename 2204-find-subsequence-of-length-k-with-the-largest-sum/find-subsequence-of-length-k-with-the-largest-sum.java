@@ -1,19 +1,35 @@
 class Solution {
     public int[] maxSubsequence(int[] nums, int k) {
-        int [][] numsDet = new int[nums.length][2];
+        PriorityQueue<int[]> minheap =new PriorityQueue<>((a, b)-> a[0]- b[0]);
 
-        for(int i = 0;i <nums.length;i++){
-            numsDet[i][0] = nums[i];
-            numsDet[i][1] =i;
+        for(int i=0;i<k;i++){
+            minheap.add(new int[]{
+                nums[i],
+                i
+            });
         }
-        Arrays.sort(numsDet, (a, b) -> b[0]-a[0]);
+        for(int i =k;i<nums.length;i++){
+            if(nums[i] > minheap.peek()[0]){
+                minheap.remove();
+                minheap.add(new int[]{
+                    nums[i],
+                    i
+                });
+            }            
+        }
 
-
-        Arrays.sort(numsDet, 0, k, (a, b)-> a[1] -b[1]);
+        int[][] temp = new int[k][2];
+        int j = 0;
+        while(j<k){
+            int[] ele = minheap.remove();
+            temp[j] = ele;
+            j++;
+        }
+        Arrays.sort(temp, (a,b)-> a[1]-b[1]);
 
         int[] res = new int[k];
-        for(int i= 0; i< k;i++){
-            res[i] = numsDet[i][0];
+        for(int i = 0;i<k;i++){
+            res[i] = temp[i][0];
         }
         return res;
     }
