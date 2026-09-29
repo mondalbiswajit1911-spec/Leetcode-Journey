@@ -4,23 +4,19 @@ class Solution {
         for (int num : arr) {
             map.put(num, map.getOrDefault(num, 0) + 1);
         }
-        int[][] list = new int[map.size()][2];
-        int i = 0;
+        PriorityQueue<Integer> pq = new PriorityQueue<>();
         for(Map.Entry<Integer, Integer> entry : map.entrySet()){
-            list[i][0] = entry.getKey();
-            list[i][1] = entry.getValue();
-            i++;
+        pq.add(entry.getValue());
         }
-        Arrays.sort(list, (a, b) -> a[1] -b[1]);
-
-        i =0;
-        while(i<list.length){
-            k = k-list[i][1];
+        
+        while(!pq.isEmpty()){
+            int freq = pq.remove();
+            k = k-freq;
             if(k<0){
+                pq.add(freq);
                 break;
             }
-            i++;
         }
-        return list.length -i;
+        return pq.size();
     }
 }
