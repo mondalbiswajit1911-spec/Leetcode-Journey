@@ -1,15 +1,10 @@
 class Solution {
     public int singleNonDuplicate(int[] nums) {
-        Map<Integer, Integer> counts = new HashMap<>();
-
-        for (int num : nums) {
-            counts.put(num, counts.getOrDefault(num, 0) + 1);
-        }
-        for (Map.Entry<Integer, Integer> entry : counts.entrySet()) {
-            if (entry.getValue() == 1) {
-                return entry.getKey(); // Returns the key (the number)
+        for(int i = 0;i<nums.length-1;i=i+2){
+            if(nums[i] != nums[i+1]){
+                return nums[i];
             }
         }
-        return -1;
+        return nums[nums.length -1];
     }
 }
