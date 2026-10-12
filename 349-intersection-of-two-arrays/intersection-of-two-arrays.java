@@ -9,14 +9,28 @@ class Solution {
         for(int num : nums2){
             s2.add(num);
         }
-        int[] res = new int[s1.size()];
-        int k = 0;
+
+        if(s1.size() < s2.size()){
+             int[] res = new int[s1.size()];
+             int k = 0;
         for(int num : s1){
             if(s2.contains(num)){
                 res[k] = num;
                 k++;
             }
         }
-        return Arrays.copyOfRange(res, 0, k);
+         return Arrays.copyOfRange(res, 0, k);
+        }else{
+             int[] res = new int[s2.size()];
+             int k = 0;
+        for(int num : s2){
+            if(s1.contains(num)){
+                res[k] = num;
+                k++;
+            }
+        }
+         return Arrays.copyOfRange(res, 0, k);
+        }
+       
     }
 }
